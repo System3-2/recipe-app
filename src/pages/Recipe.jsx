@@ -14,13 +14,14 @@ const Recipe = () => {
     const data = await fetch(`https://api.spoonacular.com/recipes/${params.id}/information?apiKey=${process.env.REACT_APP_API_KEY}`);
     const detailsData = await data.json();
     setDetails(detailsData);
-    console.log(details);
+    // console.log(details);
   }
 
   useEffect(() => {
     fetchDetails();
-  }, [params.id]);
+  }, [params]);
 
+  console.log(details);
 
   return (
     <DetailsWrapper>
@@ -33,20 +34,25 @@ const Recipe = () => {
         <Button
           onClick={() => setActiveTab('instructions')}
           className={activeTab === 'ingredients' ? 'active' : ''}
-        >Instructions
+        >Ingredients
         </Button>
 
         <Button
           onClick={() => setActiveTab('ingredients')}
           className={activeTab === 'instructions' ? 'active' : ''}
-        >Ingredients
+        >Instructions
         </Button>
-        <div>
+
+        { activeTab === "ingredients" &&  <div>
           <h3 dangerouslySetInnerHTML={{ __html: details.summary }}></h3>
           <h3 dangerouslySetInnerHTML={{ __html: details.instructions }}></h3>
         </div>
+        }
+       
         <ul>
-        
+        { details.extendedIngredients.map((ingredient) => {
+            return <li key={ingredient.id}>{ingredient.original}</li>
+          })}
         </ul>
       </Info>
     </DetailsWrapper>

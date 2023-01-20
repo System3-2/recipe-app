@@ -21,7 +21,7 @@ const Searched = () => {
   }
 
   useEffect(() => {
-    // getSearched(params.search);
+    getSearched(params.search);
   }, [params.search])
 
 

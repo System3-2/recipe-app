@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 // import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import { useParams, Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 
 const Cuisine = () => {
@@ -11,30 +12,30 @@ const Cuisine = () => {
 
   const getCuisine = async (name) => {
 
-    let check = localStorage.getItem('cuisine');
+    // let check = localStorage.getItem('cuisine');
 
-    if (check) {
-      setCuisine(JSON.parse(check));
-    }
-    else {
       const data = await fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${process.env.REACT_APP_API_KEY}&number=100&cuisine=${name}`);
       const recipes = await data.json();
 
       console.log(recipes.results);
       setCuisine(recipes.results);
-      localStorage.setItem('cuisine', JSON.stringify(recipes.results));
-    }
+      // localStorage.setItem('cuisine', JSON.stringify(recipes.results));
 
 
 
   }
   useEffect(() => {
-    // getCuisine(params.id);
+    getCuisine(params.id);
     // console.log(params.id);
   }, [params]);
 
   return (
-    <Grid>
+    <Grid
+    animate={{opacity: 1}}
+    initial={{opacity: 0}}
+    exit={{opacity: 0}}
+    transition={{duration: 0.5}}
+    >
 
       {cuisine.map((item) => {
         return (
@@ -51,7 +52,7 @@ const Cuisine = () => {
   )
 }
 
-const Grid = styled.div`
+const Grid = styled(motion.div)`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 3rem;
